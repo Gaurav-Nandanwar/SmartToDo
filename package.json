@@ -7,7 +7,9 @@
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "build": "cd backend && npm install && npm run build",
+    "start:prod": "cd backend && npm run start:prod"
   },
   "dependencies": {
     "react": "19.1.0",
