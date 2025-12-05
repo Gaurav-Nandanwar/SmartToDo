@@ -248,9 +248,9 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
             color: '#FFFFFF',
         },
         content: {
-            flex: 1,
             paddingHorizontal: 20,
             paddingTop: 16,
+            paddingBottom: 50, // Added padding for FAB
         },
         sectionTitle: {
             fontSize: 18,
@@ -378,22 +378,31 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
             </View>
 
             {/* Task List */}
-            <FlatList
-                data={sortedTasks}
-                keyExtractor={(item) => item._id}
-                renderItem={({ item }) => (
-                    <TaskCard
-                        task={item}
-                        onPress={() => navigation.navigate('EditTask', { taskId: item._id })}
-                        onToggleComplete={() => handleToggleComplete(item)}
-                        onDelete={() => handleDeleteTask(item._id)}
-                    />
-                )}
+            <ScrollView
+                style={[styles.container, { marginTop: 10 }]}
                 contentContainerStyle={[
                     styles.content,
                     sortedTasks.length === 0 && { flex: 1 },
                 ]}
-                ListEmptyComponent={
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                        tintColor={theme.colors.primary}
+                    />
+                }
+            >
+                {sortedTasks.length > 0 ? (
+                    sortedTasks.map((item) => (
+                        <TaskCard
+                            key={item._id}
+                            task={item}
+                            onPress={() => navigation.navigate('EditTask', { taskId: item._id })}
+                            onToggleComplete={() => handleToggleComplete(item)}
+                            onDelete={() => handleDeleteTask(item._id)}
+                        />
+                    ))
+                ) : (
                     <EmptyState
                         icon="clipboard-outline"
                         title="No Tasks Found"
@@ -412,15 +421,8 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
                             ) : undefined
                         }
                     />
-                }
-                refreshControl={
-                    <RefreshControl
-                        refreshing={refreshing}
-                        onRefresh={onRefresh}
-                        tintColor={theme.colors.primary}
-                    />
-                }
-            />
+                )}
+            </ScrollView>
 
             {/* FAB */}
             <TouchableOpacity

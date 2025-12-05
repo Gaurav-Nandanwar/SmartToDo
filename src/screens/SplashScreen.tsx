@@ -49,14 +49,18 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
                 }
 
                 // Load stored auth
-                await dispatch(loadStoredAuth()).unwrap();
+                const authResult = await dispatch(loadStoredAuth()).unwrap();
 
-                // Wait for animation to complete
+                // Wait for minimum animation time
                 setTimeout(() => {
-                    navigation.replace('Home');
+                    if (authResult?.access_token) {
+                        navigation.replace('Home');
+                    } else {
+                        navigation.replace('Login');
+                    }
                 }, 2000);
             } catch (error) {
-                // No stored auth, go to login
+                // Error loading auth, go to login
                 setTimeout(() => {
                     navigation.replace('Login');
                 }, 2000);

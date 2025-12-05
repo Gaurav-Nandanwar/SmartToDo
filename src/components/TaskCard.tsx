@@ -66,8 +66,8 @@ const TaskCard: React.FC<TaskCardProps> = ({
         container: {
             backgroundColor: theme.colors.card,
             borderRadius: theme.borderRadius.lg,
-            padding: theme.spacing.md,
-            marginBottom: theme.spacing.md,
+            padding: theme.spacing.sm, // Reduced from md
+            marginBottom: theme.spacing.sm, // Reduced from md
             ...theme.shadows.md,
             borderLeftWidth: 4,
             borderLeftColor: task.completed
@@ -80,7 +80,7 @@ const TaskCard: React.FC<TaskCardProps> = ({
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'flex-start',
-            marginBottom: theme.spacing.sm,
+            marginBottom: 4, // Reduced from theme.spacing.sm
         },
         titleContainer: {
             flex: 1,
@@ -90,7 +90,7 @@ const TaskCard: React.FC<TaskCardProps> = ({
             fontSize: 18,
             fontWeight: '700',
             color: theme.colors.text,
-            marginBottom: theme.spacing.xs,
+            marginBottom: 2, // Reduced from theme.spacing.xs
             textDecorationLine: task.completed ? 'line-through' : 'none',
             opacity: task.completed ? 0.6 : 1,
         },
@@ -100,8 +100,18 @@ const TaskCard: React.FC<TaskCardProps> = ({
             lineHeight: 20,
             opacity: task.completed ? 0.5 : 1,
         },
+        actionsContainer: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginLeft: 8,
+        },
+        deleteButton: {
+            padding: 4,
+            marginRight: 4,
+        },
         checkboxContainer: {
-            marginTop: 2,
+            // marginLeft handled by actionsContainer layout or specific spacing
+            marginLeft: 4,
         },
         checkbox: {
             width: 28,
@@ -117,15 +127,15 @@ const TaskCard: React.FC<TaskCardProps> = ({
             flexDirection: 'row',
             flexWrap: 'wrap',
             alignItems: 'center',
-            marginTop: theme.spacing.sm,
-            gap: theme.spacing.sm,
+            marginTop: 8, // Reduced from theme.spacing.sm
+            gap: 8,
         },
         priorityBadge: {
             flexDirection: 'row',
             alignItems: 'center',
             backgroundColor: getPriorityColor(),
-            paddingHorizontal: theme.spacing.sm,
-            paddingVertical: 4,
+            paddingHorizontal: 8,
+            paddingVertical: 2, // Reduced
             borderRadius: theme.borderRadius.sm,
         },
         priorityText: {
@@ -161,25 +171,14 @@ const TaskCard: React.FC<TaskCardProps> = ({
             flexDirection: 'row',
             alignItems: 'center',
             backgroundColor: theme.colors.primary + '20',
-            paddingHorizontal: theme.spacing.sm,
-            paddingVertical: 4,
+            paddingHorizontal: 8,
+            paddingVertical: 2,
             borderRadius: theme.borderRadius.sm,
         },
         categoryText: {
             fontSize: 12,
             color: theme.colors.primary,
             marginLeft: 4,
-        },
-        footer: {
-            flexDirection: 'row',
-            justifyContent: 'flex-end',
-            marginTop: theme.spacing.sm,
-            paddingTop: theme.spacing.sm,
-            borderTopWidth: 1,
-            borderTopColor: theme.colors.border,
-        },
-        deleteButton: {
-            padding: theme.spacing.xs,
         },
     });
 
@@ -194,7 +193,7 @@ const TaskCard: React.FC<TaskCardProps> = ({
                 <View style={styles.container}>
                     <View style={styles.header}>
                         <View style={styles.titleContainer}>
-                            <Text style={styles.title} numberOfLines={2}>
+                            <Text style={styles.title} numberOfLines={1}>
                                 {task.title}
                             </Text>
                             {task.description && (
@@ -203,17 +202,28 @@ const TaskCard: React.FC<TaskCardProps> = ({
                                 </Text>
                             )}
                         </View>
-                        <TouchableOpacity
-                            onPress={onToggleComplete}
-                            style={styles.checkboxContainer}
-                            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                        >
-                            <View style={styles.checkbox}>
-                                {task.completed && (
-                                    <Icon name="checkmark" size={18} color="#FFFFFF" />
-                                )}
-                            </View>
-                        </TouchableOpacity>
+
+                        <View style={styles.actionsContainer}>
+                            <TouchableOpacity
+                                onPress={onDelete}
+                                style={styles.deleteButton}
+                                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                            >
+                                <Icon name="trash-outline" size={20} color={theme.colors.error} />
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                onPress={onToggleComplete}
+                                style={styles.checkboxContainer}
+                                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                            >
+                                <View style={styles.checkbox}>
+                                    {task.completed && (
+                                        <Icon name="checkmark" size={18} color="#FFFFFF" />
+                                    )}
+                                </View>
+                            </TouchableOpacity>
+                        </View>
                     </View>
 
                     <View style={styles.metaContainer}>
@@ -256,16 +266,6 @@ const TaskCard: React.FC<TaskCardProps> = ({
                                 <Text style={styles.categoryText}>{task.category}</Text>
                             </View>
                         )}
-                    </View>
-
-                    <View style={styles.footer}>
-                        <TouchableOpacity
-                            onPress={onDelete}
-                            style={styles.deleteButton}
-                            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                        >
-                            <Icon name="trash-outline" size={20} color={theme.colors.error} />
-                        </TouchableOpacity>
                     </View>
                 </View>
             </TouchableOpacity>
