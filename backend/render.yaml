@@ -1,0 +1,13 @@
+# Render.com Deployment Configuration
+
+## Build Command
+npm install
+
+## Start Command
+npm run start:prod
+
+## Environment Variables (Set these in Render Dashboard)
+MONGODB_URI=mongodb+srv://your-username:your-password@your-cluster.mongodb.net/smarttodo?retryWrites=true&w=majority
+JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
+PORT=3000
+NODE_ENV=production
